@@ -10,7 +10,7 @@
     "license": "MIT",
     "autoload": {
         "psr-4": {
-            "Tomatophp\\TomatoSaas\\": "src/"
+            "TomatoPHP\\TomatoSaas\\": "src/"
         }
     },
     "autoload-dev": {
@@ -21,7 +21,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Tomatophp\\TomatoSaas\\TomatoSaasServiceProvider"
+                "TomatoPHP\\TomatoSaas\\TomatoSaasServiceProvider"
             ]
         }
     },
