@@ -38,8 +38,7 @@ class TomatoSaasInstall extends Command
     {
         $this->info('Publish Vendor Assets');
         $this->callSilent('optimize:clear');
-        $this->yarnCommand(['install']);
-        $this->yarnCommand(['build']);
+        $this->artisanCommand(["tenancy:install"]);
         $this->artisanCommand(["migrate"]);
         $this->artisanCommand(["optimize:clear"]);
         $this->info('tomatoSaas installed successfully.');

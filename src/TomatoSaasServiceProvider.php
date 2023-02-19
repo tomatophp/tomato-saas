@@ -2,7 +2,14 @@
 
 namespace TomatoPHP\TomatoSaas;
 
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\ServiceProvider;
+use Stancl\Tenancy\Events\SyncedResourceChangedInForeignDatabase;
+use Stancl\Tenancy\Middleware\InitializeTenancyByDomain;
+use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
+use TomatoPHP\TomatoPHP\Services\Menu\TomatoMenuRegister;
+use TomatoPHP\TomatoSaas\Menus\DomainMenu;
 
 
 class TomatoSaasServiceProvider extends ServiceProvider
@@ -47,6 +54,29 @@ class TomatoSaasServiceProvider extends ServiceProvider
 
         //Register Routes
         $this->loadRoutesFrom(__DIR__.'/../routes/web.php');
+
+        TomatoMenuRegister::registerMenu(DomainMenu::class);
+
+        Event::listen(SyncedResourceChangedInForeignDatabase::class, function ($data){
+            config(['database.connections.dynamic.database' => $data->tenant->tenancy_db_name]);
+            DB::connection('dynamic')
+                ->table('users')
+                ->where('email', $data->model->email)
+                ->update([
+                    "name" => $data->model->first_name . ' '. $data->model->last_name,
+                    "email" => $data->model->email,
+                    "password" => $data->model->password,
+                ]);
+        });
+
+        if(isset($_SERVER['HTTP_HOST']) && $_SERVER['HTTP_HOST'] !== config('tenancy.central_domains.0')) {
+            InitializeTenancyByDomain::$onFail = function () {
+                return redirect()->away('https://' . config('tenancy.central_domains.0'));
+            };
+
+            $this->app['router']->pushMiddlewareToGroup('web', InitializeTenancyByDomain::class);
+            $this->app['router']->pushMiddlewareToGroup('web', PreventAccessFromCentralDomains::class);
+        }
 
     }
 
