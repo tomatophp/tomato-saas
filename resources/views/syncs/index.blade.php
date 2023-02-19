@@ -1,6 +1,6 @@
 <x-tomato-admin-layout>
     <x-slot name="header">
-        {{ __('Sites') }}
+        {{ __('SaaS') }}
     </x-slot>
     <x-slot name="headerBody">
         <Link modal href="/admin/syncs/create" class="filament-button inline-flex items-center justify-center py-1 gap-1 font-medium rounded-lg border transition-colors focus:outline-none focus:ring-offset-2 focus:ring-2 focus:ring-inset dark:focus:ring-offset-0 min-h-[2.25rem] px-4 text-sm text-white shadow focus:ring-white border-transparent bg-primary-600 hover:bg-primary-500 focus:bg-primary-700 focus:ring-offset-primary-700 filament-page-button-action">
@@ -11,7 +11,7 @@
 
     <div class="pb-12" v-cloak>
         <div class="mx-auto">
-            @if(\Modules\Saas\Entities\Sync::count())
+            @if(\TomatoPHP\TomatoSaas\Models\Sync::count())
             <x-splade-table :for="$table" striped>
                 <x-splade-cell domain>
                     <a class="text-primary-500" href="https://{{\Str::lower($item->username).'.'. \Str::replace('https://', '', url('/'))}}" target="_blank">
@@ -20,6 +20,12 @@
                 </x-splade-cell>
                 <x-splade-cell actions>
                     <div class="flex justify-start">
+                        <Link href="/admin/syncs/{{ $item->id }}/impersonate" class="px-2 text-green-500" modal>
+                            <div class="flex justify-start space-x-2">
+                                <x-heroicon-s-globe-alt class="h-4 w-4 ltr:mr-2 rtl:ml-2"/>
+                                <span>{{__('Login As')}}</span>
+                            </div>
+                        </Link>
                         <Link href="/admin/syncs/{{ $item->id }}" class="px-2 text-blue-500" modal>
                             <div class="flex justify-start space-x-2">
                                 <x-heroicon-s-eye class="h-4 w-4 ltr:mr-2 rtl:ml-2"/>

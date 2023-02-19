@@ -1,7 +1,7 @@
 <x-splade-modal class="font-main">
     <h1 class="text-2xl font-bold mb-4">{{trans('tomato-admin::global.crud.create')}} {{__('Site')}}</h1>
 
-    <x-splade-form :default="['plan' => 'free']" class="grid grid-cols-2 gap-4" action="{{route('admin.syncs.store')}}" method="post">
+    <x-splade-form :default="['plan' => 'free', 'type'=>'store']" class="grid grid-cols-2 gap-4" action="{{route('admin.syncs.store')}}" method="post">
         <x-splade-input class="col-span-2" label="{{__('Sub Domain')}}" name="username" type="text"  placeholder="username">
             <x-slot name="append">
                 .{{\Str::replace('https://', '', url('/'))}}

@@ -16,6 +16,8 @@ class TomatoSaasServiceProvider extends ServiceProvider
 {
     public function register(): void
     {
+
+
         //Register generate command
         $this->commands([
            \TomatoPHP\TomatoSaas\Console\TomatoSaasInstall::class,
@@ -68,20 +70,10 @@ class TomatoSaasServiceProvider extends ServiceProvider
                     "password" => $data->model->password,
                 ]);
         });
-
-        if(isset($_SERVER['HTTP_HOST']) && $_SERVER['HTTP_HOST'] !== config('tenancy.central_domains.0')) {
-            InitializeTenancyByDomain::$onFail = function () {
-                return redirect()->away('https://' . config('tenancy.central_domains.0'));
-            };
-
-            $this->app['router']->pushMiddlewareToGroup('web', InitializeTenancyByDomain::class);
-            $this->app['router']->pushMiddlewareToGroup('web', PreventAccessFromCentralDomains::class);
-        }
-
     }
 
     public function boot(): void
     {
-        //you boot methods here
+        //
     }
 }

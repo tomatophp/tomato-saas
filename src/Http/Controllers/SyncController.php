@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Illuminate\View\View;
 use TomatoPHP\TomatoSaas\Models\CentralUser;
@@ -72,9 +73,9 @@ class SyncController extends Controller
         $sync->type = $request->get('type');
         $sync->plan = $request->get('plan');
         $sync->user_id = auth('web')->user()->id;
-        $sync->username = $request->get('username');
+        $sync->username = Str::lower($request->get('username'));
         $sync->store = $request->get('store');
-        $sync->apps = json_encode([]);
+        $sync->apps = [];
         $sync->save();
 
         $saas = Tenant::create([
@@ -134,7 +135,7 @@ class SyncController extends Controller
         $model->store = $request->get('store');
         $model->type = $request->get('type');
         $model->plan = $request->get('plan');
-        $model->apps = json_encode([]);
+        $model->apps = [];
         $model->save();
 
         Toast::title(__('Sync updated successfully'))->success()->autoDismiss(2);
@@ -156,7 +157,12 @@ class SyncController extends Controller
         );
     }
 
-    public function url(Request $request){
+    /**
+     * @param Request $request
+     * @return RedirectResponse
+     */
+    public function url(Request $request): RedirectResponse
+    {
         $request->validate([
             'token' => "required|string",
             'email' => "required|string|email|max:255",
@@ -180,5 +186,16 @@ class SyncController extends Controller
         }
 
         return UserImpersonation::makeResponse($request->get('token'));
+    }
+
+    /**
+     * @param CentralUser $model
+     * @return RedirectResponse
+     */
+    public function impersonate(\TomatoPHP\TomatoSaas\Models\CentralUser $model): RedirectResponse
+    {
+        $saas = Tenant::where('id', $model->username)->first();
+        $token = tenancy()->impersonate($saas, 1, '/admin');
+        return redirect()->to('https://'.$saas->domains[0]->domain . '/admin/login/url?token='.$token->token .'&email='. $model->email);
     }
 }

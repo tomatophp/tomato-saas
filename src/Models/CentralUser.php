@@ -55,6 +55,10 @@ class CentralUser extends Authenticatable implements SyncMaster
         'updated_at'
     ];
 
+    protected $casts = [
+        'apps' => 'array',
+    ];
+
     /**
      * @var bool
      */
