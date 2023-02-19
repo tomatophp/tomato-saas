@@ -3,7 +3,7 @@
         {{ __('SaaS') }}
     </x-slot>
     <x-slot name="headerBody">
-        <Link modal href="/admin/syncs/create" class="filament-button inline-flex items-center justify-center py-1 gap-1 font-medium rounded-lg border transition-colors focus:outline-none focus:ring-offset-2 focus:ring-2 focus:ring-inset dark:focus:ring-offset-0 min-h-[2.25rem] px-4 text-sm text-white shadow focus:ring-white border-transparent bg-primary-600 hover:bg-primary-500 focus:bg-primary-700 focus:ring-offset-primary-700 filament-page-button-action">
+        <Link modal href="/admin/saas/create" class="filament-button inline-flex items-center justify-center py-1 gap-1 font-medium rounded-lg border transition-colors focus:outline-none focus:ring-offset-2 focus:ring-2 focus:ring-inset dark:focus:ring-offset-0 min-h-[2.25rem] px-4 text-sm text-white shadow focus:ring-white border-transparent bg-primary-600 hover:bg-primary-500 focus:bg-primary-700 focus:ring-offset-primary-700 filament-page-button-action">
             {{trans('tomato-admin::global.crud.create-new')}} {{__('Site')}}
         </Link>
     </x-slot>
@@ -20,25 +20,25 @@
                 </x-splade-cell>
                 <x-splade-cell actions>
                     <div class="flex justify-start">
-                        <Link href="/admin/syncs/{{ $item->id }}/impersonate" class="px-2 text-green-500" modal>
+                        <Link href="/admin/saas/{{ $item->id }}/impersonate" class="px-2 text-green-500" modal>
                             <div class="flex justify-start space-x-2">
                                 <x-heroicon-s-globe-alt class="h-4 w-4 ltr:mr-2 rtl:ml-2"/>
                                 <span>{{__('Login As')}}</span>
                             </div>
                         </Link>
-                        <Link href="/admin/syncs/{{ $item->id }}" class="px-2 text-blue-500" modal>
+                        <Link href="/admin/saas/{{ $item->id }}" class="px-2 text-blue-500" modal>
                             <div class="flex justify-start space-x-2">
                                 <x-heroicon-s-eye class="h-4 w-4 ltr:mr-2 rtl:ml-2"/>
                                 <span>{{trans('tomato-admin::global.crud.view')}}</span>
                             </div>
                         </Link>
-                        <Link href="/admin/syncs/{{ $item->id }}/edit" class="px-2 text-yellow-400" modal>
+                        <Link href="/admin/saas/{{ $item->id }}/edit" class="px-2 text-yellow-400" modal>
                             <div class="flex justify-start space-x-2">
                                 <x-heroicon-s-pencil class="h-4 w-4 ltr:mr-2 rtl:ml-2"/>
                                 <span>{{trans('tomato-admin::global.crud.edit')}}</span>
                             </div>
                         </Link>
-                        <Link href="/admin/syncs/{{ $item->id }}"
+                        <Link href="/admin/saas/{{ $item->id }}"
                               confirm="{{trans('tomato-admin::global.crud.delete-confirm')}}"
                               confirm-text="{{trans('tomato-admin::global.crud.delete-confirm-text')}}"
                               confirm-button="{{trans('tomato-admin::global.crud.delete-confirm-button')}}"
