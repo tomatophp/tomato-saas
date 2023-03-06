@@ -33,7 +33,7 @@ class SyncStoreRequest extends FormRequest
                 'required',
                 'regex:/^[a-zA-Z]*$/',
                 'min:6',
-                Rule::unique('accounts', 'username')
+                Rule::unique('syncs', 'username')
             ],
             'password' => 'required|min:6|confirmed|string|max:255',
             'store' => 'required|string|max:255',
