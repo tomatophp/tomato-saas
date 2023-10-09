@@ -1,6 +1,4 @@
-<x-splade-modal class="font-main">
-    <h1 class="text-2xl font-bold mb-4">{{trans('tomato-admin::global.crud.create')}} {{__('Site')}}</h1>
-
+<x-tomato-admin-container label="{{trans('tomato-admin::global.crud.create')}} {{__('Site')}}">
     <x-splade-form :default="['plan' => 'free', 'type'=>'store']" class="grid grid-cols-2 gap-4" action="{{route('admin.syncs.store')}}" method="post">
         <x-splade-input class="col-span-2" label="{{__('Sub Domain')}}" name="username" type="text"  placeholder="username">
             <x-slot name="append">
@@ -26,6 +24,9 @@
             <option value="pro">{{__('Pro')}}</option>
         </x-splade-select>
 
-        <x-splade-submit class="col-span-2" label="{{trans('tomato-admin::global.crud.create-new')}} {{__('Site')}}" :spinner="true" />
+        <div class="flex justify-start gap-2 pt-3">
+            <x-tomato-admin-submit  label="{{__('Save')}}" :spinner="true" />
+            <x-tomato-admin-button secondary :href="route('admin.syncs.index')" label="{{__('Cancel')}}"/>
+        </div>
     </x-splade-form>
-</x-splade-modal>
+</x-tomato-admin-container>

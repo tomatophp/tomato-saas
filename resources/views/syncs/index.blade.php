@@ -1,12 +1,12 @@
 <x-tomato-admin-layout>
-    <x-slot name="header">
+    <x-slot:header>
         {{ __('SaaS') }}
-    </x-slot>
-    <x-slot name="headerBody">
-        <Link modal href="/admin/saas/create" class="filament-button inline-flex items-center justify-center py-1 gap-1 font-medium rounded-lg border transition-colors focus:outline-none focus:ring-offset-2 focus:ring-2 focus:ring-inset dark:focus:ring-offset-0 min-h-[2.25rem] px-4 text-sm text-white shadow focus:ring-white border-transparent bg-primary-600 hover:bg-primary-500 focus:bg-primary-700 focus:ring-offset-primary-700 filament-page-button-action">
+    </x-slot:header>
+    <x-slot:buttons>
+        <x-tomato-admin-button modal href="{{route('admin.syncs.create')}}">
             {{trans('tomato-admin::global.crud.create-new')}} {{__('Site')}}
-        </Link>
-    </x-slot>
+        </x-tomato-admin-button>
+    </x-slot:buttons>
 
 
     <div class="pb-12" v-cloak>
@@ -18,40 +18,32 @@
                         {{\Str::lower($item->username).'.'. \Str::replace('https://', '', url('/'))}}
                     </a>
                 </x-splade-cell>
+                <x-splade-cell email>
+                    <x-tomato-admin-row table type="email" value="{{$item->email}}" />
+                </x-splade-cell>
                 <x-splade-cell actions>
                     <div class="flex justify-start">
-                        <Link href="/admin/saas/{{ $item->id }}/impersonate" class="px-2 text-green-500" modal>
-                            <div class="flex justify-start space-x-2">
-                                <x-heroicon-s-globe-alt class="h-4 w-4 ltr:mr-2 rtl:ml-2"/>
-                                <span>{{__('Login As')}}</span>
-                            </div>
-                        </Link>
-                        <Link href="/admin/saas/{{ $item->id }}" class="px-2 text-blue-500" modal>
-                            <div class="flex justify-start space-x-2">
-                                <x-heroicon-s-eye class="h-4 w-4 ltr:mr-2 rtl:ml-2"/>
-                                <span>{{trans('tomato-admin::global.crud.view')}}</span>
-                            </div>
-                        </Link>
-                        <Link href="/admin/saas/{{ $item->id }}/edit" class="px-2 text-yellow-400" modal>
-                            <div class="flex justify-start space-x-2">
-                                <x-heroicon-s-pencil class="h-4 w-4 ltr:mr-2 rtl:ml-2"/>
-                                <span>{{trans('tomato-admin::global.crud.edit')}}</span>
-                            </div>
-                        </Link>
-                        <Link href="/admin/saas/{{ $item->id }}"
+                        <x-tomato-admin-button type="icon" title="{{__('Login As')}}" href="/admin/saas/{{ $item->id }}/impersonate"  modal>
+                            <x-heroicon-s-globe-alt class="h-6 w-6"/>
+
+                        </x-tomato-admin-button>
+                        <x-tomato-admin-button success type="icon" title="{{trans('tomato-admin::global.crud.view')}}" href="/admin/saas/{{ $item->id }}" modal>
+                            <x-heroicon-s-eye class="h-6 w-6"/>
+                        </x-tomato-admin-button>
+                        <x-tomato-admin-button warning type="icon" href="/admin/saas/{{ $item->id }}/edit" title="{{trans('tomato-admin::global.crud.edit')}}" modal>
+                            <x-heroicon-s-pencil class="h-6 w-6"/>
+                        </x-tomato-admin-button>
+                        <x-tomato-admin-button danger type="icon" href="/admin/saas/{{ $item->id }}"
                               confirm="{{trans('tomato-admin::global.crud.delete-confirm')}}"
                               confirm-text="{{trans('tomato-admin::global.crud.delete-confirm-text')}}"
                               confirm-button="{{trans('tomato-admin::global.crud.delete-confirm-button')}}"
                               cancel-button="{{trans('tomato-admin::global.crud.delete-confirm-cancel-button')}}"
-                              class="px-2 text-red-500"
                               method="delete"
+                                               title="{{trans('tomato-admin::global.crud.delete')}}"
 
                         >
-                            <div class="flex justify-start space-x-2">
-                                <x-heroicon-s-trash class="h-4 w-4 ltr:mr-2 rtl:ml-2"/>
-                                <span>{{trans('tomato-admin::global.crud.delete')}}</span>
-                            </div>
-                        </Link>
+                            <x-heroicon-s-trash class="h-6 w-6"/>
+                        </x-tomato-admin-button>
                     </div>
                 </x-splade-cell>
             </x-splade-table>

@@ -8,8 +8,8 @@ use Illuminate\Support\ServiceProvider;
 use Stancl\Tenancy\Events\SyncedResourceChangedInForeignDatabase;
 use Stancl\Tenancy\Middleware\InitializeTenancyByDomain;
 use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
-use TomatoPHP\TomatoPHP\Services\Menu\TomatoMenuRegister;
-use TomatoPHP\TomatoSaas\Menus\DomainMenu;
+use TomatoPHP\TomatoAdmin\Facade\TomatoMenu;
+use TomatoPHP\TomatoAdmin\Services\Contracts\Menu;
 
 
 class TomatoSaasServiceProvider extends ServiceProvider
@@ -57,7 +57,18 @@ class TomatoSaasServiceProvider extends ServiceProvider
         //Register Routes
         $this->loadRoutesFrom(__DIR__.'/../routes/web.php');
 
-        TomatoMenuRegister::registerMenu(DomainMenu::class);
+    }
+
+    public function boot(): void
+    {
+
+        TomatoMenu::register(
+            Menu::make()
+                ->group(__('Tools'))
+                ->label(__("SaaS"))
+                ->icon("bx bx-globe")
+                ->route("admin.syncs.index"),
+        );
 
         Event::listen(SyncedResourceChangedInForeignDatabase::class, function ($data){
             config(['database.connections.dynamic.database' => $data->tenant->tenancy_db_name]);
@@ -70,10 +81,5 @@ class TomatoSaasServiceProvider extends ServiceProvider
                     "password" => $data->model->password,
                 ]);
         });
-    }
-
-    public function boot(): void
-    {
-        //
     }
 }

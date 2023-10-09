@@ -15,7 +15,7 @@ use TomatoPHP\TomatoSaas\Models\Sync;
 use TomatoPHP\TomatoSaas\Models\Tenant;
 use ProtoneMedia\Splade\Facades\Toast;
 use Stancl\Tenancy\Features\UserImpersonation;
-use TomatoPHP\TomatoPHP\Services\Tomato;
+use TomatoPHP\TomatoAdmin\Facade\Tomato;
 use TomatoPHP\TomatoSettings\Settings\SitesSettings;
 
 class SyncController extends Controller
@@ -29,6 +29,7 @@ class SyncController extends Controller
         return Tomato::index(
             request: $request,
             view: 'tomato-saas::syncs.index',
+            model: Sync::class,
             table: \TomatoPHP\TomatoSaas\Tables\SyncTable::class,
         );
     }

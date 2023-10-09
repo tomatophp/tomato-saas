@@ -1,6 +1,4 @@
-<x-splade-modal class="font-main">
-    <h1 class="text-2xl font-bold mb-4">{{trans('tomato-admin::global.crud.edit')}} {{__('Site')}} #{{$model->id}}</h1>
-
+<x-tomato-admin-container label="{{trans('tomato-admin::global.crud.edit')}} {{__('Site')}} #{{$model->id}}">
     <x-splade-form class="grid grid-cols-2 gap-4" action="{{route('admin.syncs.update', $model->id)}}" method="post" :default="$model">
         <x-splade-input label="{{__('First Name')}}" name="first_name" type="text"  placeholder="First name" />
         <x-splade-input label="{{__('Last Name')}}" name="last_name" type="text"  placeholder="Last name" />
@@ -20,6 +18,21 @@
             <option value="pro">{{__('Pro')}}</option>
         </x-splade-select>
 
-        <x-splade-submit class="col-span-2" label="{{trans('tomato-admin::global.crud.update')}} {{__('Site')}}" :spinner="true" />
-    </x-splade-form>
-</x-splade-modal>
+        <div class="flex justify-start gap-2 pt-3">
+            <x-tomato-admin-submit  label="{{__('Save')}}" :spinner="true" />
+            <x-tomato-admin-button
+                danger
+                :href="route('admin.syncs.destroy', $model->id)"
+                title="{{trans('tomato-admin::global.crud.edit')}}"
+                confirm="{{trans('tomato-admin::global.crud.delete-confirm')}}"
+                confirm-text="{{trans('tomato-admin::global.crud.delete-confirm-text')}}"
+                confirm-button="{{trans('tomato-admin::global.crud.delete-confirm-button')}}"
+                cancel-button="{{trans('tomato-admin::global.crud.delete-confirm-cancel-button')}}"
+                class="px-2 text-red-500"
+                method="delete"
+            >
+                {{__('Delete')}}
+            </x-tomato-admin-button>
+            <x-tomato-admin-button secondary :href="route('admin.syncs.index')" label="{{__('Cancel')}}"/>
+        </div>    </x-splade-form>
+</x-tomato-admin-container>
