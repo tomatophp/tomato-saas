@@ -15,6 +15,7 @@ use Stancl\Tenancy\Listeners;
 use Stancl\Tenancy\Middleware;
 use Stancl\Tenancy\Middleware\InitializeTenancyByDomain;
 use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
+use TomatoPHP\TomatoAdmin\TomatoAdminServiceProvider;
 use TomatoPHP\TomatoPHP\Http\Middleware\LanguageSwitcher;
 
 class TenancyServiceProvider extends ServiceProvider
@@ -98,7 +99,6 @@ class TenancyServiceProvider extends ServiceProvider
 
     public function register()
     {
-
     }
 
     public function boot()

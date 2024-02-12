@@ -54,21 +54,24 @@ class TomatoSaasServiceProvider extends ServiceProvider
            __DIR__.'/../resources/lang' => app_path('lang/vendor/tomato-saas'),
         ], 'tomato-saas-lang');
 
-        //Register Routes
-        $this->loadRoutesFrom(__DIR__.'/../routes/web.php');
-
+        if (isset($_SERVER['HTTP_HOST']) && $_SERVER['HTTP_HOST'] === config('tenancy.central_domains.0')) {
+            //Register Routes
+            $this->loadRoutesFrom(__DIR__ . '/../routes/web.php');
+        }
     }
 
     public function boot(): void
     {
 
-        TomatoMenu::register(
-            Menu::make()
-                ->group(__('Tools'))
-                ->label(__("SaaS"))
-                ->icon("bx bx-globe")
-                ->route("admin.syncs.index"),
-        );
+        if (isset($_SERVER['HTTP_HOST']) && $_SERVER['HTTP_HOST'] === config('tenancy.central_domains.0')) {
+            TomatoMenu::register(
+                Menu::make()
+                    ->group(__('Tools'))
+                    ->label(__("SaaS"))
+                    ->icon("bx bx-globe")
+                    ->route("admin.syncs.index"),
+            );
+        }
 
         Event::listen(SyncedResourceChangedInForeignDatabase::class, function ($data){
             config(['database.connections.dynamic.database' => $data->tenant->tenancy_db_name]);

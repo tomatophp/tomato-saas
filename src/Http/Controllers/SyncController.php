@@ -149,13 +149,15 @@ class SyncController extends Controller
      */
     public function destroy(\TomatoPHP\TomatoSaas\Models\CentralUser $model): RedirectResponse
     {
-        Tenant::find($model->username)->delete();
+        Tenant::find($model->username)?->delete();
         $model->tenants()->sync([]);
-        return Tomato::destroy(
+        $response =  Tomato::destroy(
             model: $model,
             message: __('Sync deleted successfully'),
             redirect: 'admin.syncs.index',
         );
+
+        return $response->redirect;
     }
 
     /**
