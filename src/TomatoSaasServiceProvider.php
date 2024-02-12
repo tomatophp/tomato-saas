@@ -53,11 +53,8 @@ class TomatoSaasServiceProvider extends ServiceProvider
         $this->publishes([
            __DIR__.'/../resources/lang' => app_path('lang/vendor/tomato-saas'),
         ], 'tomato-saas-lang');
-
-        if (isset($_SERVER['HTTP_HOST']) && $_SERVER['HTTP_HOST'] === config('tenancy.central_domains.0')) {
-            //Register Routes
-            $this->loadRoutesFrom(__DIR__ . '/../routes/web.php');
-        }
+        
+        $this->loadRoutesFrom(__DIR__ . '/../routes/web.php');
     }
 
     public function boot(): void
