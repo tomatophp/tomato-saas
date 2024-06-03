@@ -133,21 +133,6 @@ class TenancyServiceProvider extends ServiceProvider
 
     protected function makeTenancyMiddlewareHighestPriority()
     {
-        $tenancyMiddleware = [
-            LanguageSwitcher::class,
-            // Even higher priority than the initialization middleware
-            Middleware\PreventAccessFromCentralDomains::class,
-            Middleware\InitializeTenancyByDomain::class,
-            Middleware\InitializeTenancyBySubdomain::class,
-            Middleware\InitializeTenancyByDomainOrSubdomain::class,
-            Middleware\InitializeTenancyByPath::class,
-            Middleware\InitializeTenancyByRequestData::class,
-        ];
-
-        foreach (array_reverse($tenancyMiddleware) as $middleware) {
-            $this->app[\Illuminate\Contracts\Http\Kernel::class]->appendToMiddlewarePriority($middleware);
-        }
-
         if (isset($_SERVER['HTTP_HOST']) && $_SERVER['HTTP_HOST'] !== config('tenancy.central_domains.0')) {
             InitializeTenancyByDomain::$onFail = function () {
                 return redirect()->away('https://' . config('tenancy.central_domains.0'));
