@@ -2,6 +2,7 @@
 
 namespace TomatoPHP\TomatoSaas;
 
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\ServiceProvider;
@@ -53,7 +54,7 @@ class TomatoSaasServiceProvider extends ServiceProvider
         $this->publishes([
            __DIR__.'/../resources/lang' => app_path('lang/vendor/tomato-saas'),
         ], 'tomato-saas-lang');
-        
+
         $this->loadRoutesFrom(__DIR__ . '/../routes/web.php');
     }
 
@@ -79,6 +80,7 @@ class TomatoSaasServiceProvider extends ServiceProvider
                     "name" => $data->model->first_name . ' '. $data->model->last_name,
                     "email" => $data->model->email,
                     "password" => $data->model->password,
+                    "email_verified_at" => Carbon::now()->toDateTimeString()
                 ]);
         });
     }

@@ -5,6 +5,8 @@ declare(strict_types=1);
 
 namespace TomatoPHP\TomatoSaas;
 
+use Illuminate\Auth\Middleware\Authenticate;
+use Illuminate\Foundation\Http\Middleware\ValidateCsrfToken;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
@@ -16,7 +18,7 @@ use Stancl\Tenancy\Middleware;
 use Stancl\Tenancy\Middleware\InitializeTenancyByDomain;
 use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
 use TomatoPHP\TomatoAdmin\TomatoAdminServiceProvider;
-use TomatoPHP\TomatoPHP\Http\Middleware\LanguageSwitcher;
+use TomatoPHP\TomatoAdmin\Http\Middleware\LanguageSwitcher;
 
 class TenancyServiceProvider extends ServiceProvider
 {
@@ -143,7 +145,7 @@ class TenancyServiceProvider extends ServiceProvider
         ];
 
         foreach (array_reverse($tenancyMiddleware) as $middleware) {
-            $this->app[\Illuminate\Contracts\Http\Kernel::class]->prependToMiddlewarePriority($middleware);
+            $this->app[\Illuminate\Contracts\Http\Kernel::class]->appendToMiddlewarePriority($middleware);
         }
 
         if (isset($_SERVER['HTTP_HOST']) && $_SERVER['HTTP_HOST'] !== config('tenancy.central_domains.0')) {
@@ -153,6 +155,9 @@ class TenancyServiceProvider extends ServiceProvider
 
             $this->app['router']->pushMiddlewareToGroup('web', InitializeTenancyByDomain::class);
             $this->app['router']->pushMiddlewareToGroup('web', PreventAccessFromCentralDomains::class);
+
+            $this->app['router']->pushMiddlewareToGroup('auth', InitializeTenancyByDomain::class);
+            $this->app['router']->pushMiddlewareToGroup('auth', PreventAccessFromCentralDomains::class);
 
             $this->app['router']->pushMiddlewareToGroup('api', InitializeTenancyByDomain::class);
             $this->app['router']->pushMiddlewareToGroup('api', PreventAccessFromCentralDomains::class);
