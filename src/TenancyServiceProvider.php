@@ -153,11 +153,11 @@ class TenancyServiceProvider extends ServiceProvider
                 return redirect()->away('https://' . config('tenancy.central_domains.0'));
             };
 
-            $this->app['router']->pushMiddlewareToGroup('web', InitializeTenancyByDomain::class);
-            $this->app['router']->pushMiddlewareToGroup('web', PreventAccessFromCentralDomains::class);
-
             $this->app['router']->pushMiddlewareToGroup('auth', InitializeTenancyByDomain::class);
             $this->app['router']->pushMiddlewareToGroup('auth', PreventAccessFromCentralDomains::class);
+
+            $this->app['router']->pushMiddlewareToGroup('web', InitializeTenancyByDomain::class);
+            $this->app['router']->pushMiddlewareToGroup('web', PreventAccessFromCentralDomains::class);
 
             $this->app['router']->pushMiddlewareToGroup('api', InitializeTenancyByDomain::class);
             $this->app['router']->pushMiddlewareToGroup('api', PreventAccessFromCentralDomains::class);
